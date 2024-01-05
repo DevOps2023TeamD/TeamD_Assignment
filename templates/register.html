@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} <title>Register</title>{% endblock %}
+
+{% block body %}
+<div class="header">
+    <div class="title">TSAO Capstone Records System</div>
+</div>
+<main class="content">
+    <form action="/register" method="POST">
+        <h2>Create Account</h2>
+        <!-- Username Input -->
+        <div class="input-selection">
+            <input type="text" name="username" id="username" placeholder=" " required>
+            <div class="label">
+                <label for="username">Username</label>
+            </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="input-selection">
+            <input type="password" name="password" id="password" placeholder=" " required>
+            <div class="label">
+                <label for="password">Password</label>
+            </div>
+        </div>
+
+        <div class="btns-group">
+            <input type="submit" class="btn signUpBtn" value="Sign Up">
+            <a class="btn cancelBtn" href="/">Cancel</a>
+        </div>
+
+        {% if message == 'Successful registration' %}
+        <div class="success-text">Account succesfully sent for approval.</div>
+        {% endif %}
+        
+        <div class="signUpLink">Have an account?<a class="underline-link" href="/login">Click here</a></div>
+    </form>
+</main>
+{% endblock %}
