@@ -65,3 +65,4 @@ def register():
         return render_template('register.html', message='Successful registration')
     else:
         return render_template('register.html')
+
