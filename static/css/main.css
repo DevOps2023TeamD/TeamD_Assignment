@@ -278,6 +278,60 @@ textarea:focus {
     color: var(--dark-grey);
 }
 
+/* Account Management List*/
+.ac-header{
+    margin-bottom: 10px;
+}
+
+.ac-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ac-containertitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    width: 1000px;
+    font-size: 0.8rem;
+    transition: transform ease-in-out 0.2s;
+    background-color: var(--light-grey);
+    text-decoration: none;
+}
+
+
+.ac-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    width: 1000px;
+    font-size: 0.8rem;
+    transition: transform ease-in-out 0.2s;
+    background-color: lavender;
+    text-decoration: none;
+}
+
+.ac-bold {
+    font-weight: bold;
+}
+
+.ac-link {
+    color: inherit; /* or color: transparent; */
+    text-decoration: none; /* Optional: Remove underline */
+    transition: transform 0.3s;
+}
+.ac-link:hover {
+    color: var(--cyan)
+}
+.ac-title {
+    font-size: 1rem;
+    color: var(--dark-grey);;
+}
+
+
 /* Buttons */
 
 .btns-group {

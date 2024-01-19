@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} <title>TSAO Capstone Records System</title>{% endblock %}
+
+{% block body %}
+<div class="header">
+    <div class="title">TSAO Capstone Records System</div>
+</div>
+<main class="content">
+    <h2 class="ac-header">Account Management</h2>
+    <div class="ac-list">
+        <div class="ac-containertitle">
+            <p class="ac-title">User</p>
+            <p class="cp-pic">Password</p>
+            <p class="cp-pic">Role</p>
+            <p class="cp-pic">Creation Date</p>
+            <p class="cp-pic" style="margin-right: 50px;">Actions</p>
+        </a>
+    </div>
+    
+    <div class="ac-list">
+        <div class="ac-container">
+            <p class="ac-bold">Dr Joey</p>
+            <p class="cp-pic">1234</p>
+            <p class="ac-bold">Administrator</p>
+            <p class="cp-pic">06/26/2021</p>
+            <p class="ac-actions">
+                <a href="/edit" class="ac-link">Edit</a>  |
+                <a href="/delete" class="ac-link">Delete</a> |  
+                <a href="/approve" class="ac-link">Approve</a>
+            </p>
+        </div>
+    </div>
+    
+</main>
+
+{% endblock %}
