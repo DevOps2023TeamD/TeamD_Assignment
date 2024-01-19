@@ -8,30 +8,47 @@
 </div>
 <main class="content">
     <h2 class="ac-header">Account Management</h2>
-    <div class="ac-list">
-        <div class="ac-containertitle">
-            <p class="ac-title">User</p>
-            <p class="cp-pic">Password</p>
-            <p class="cp-pic">Role</p>
-            <p class="cp-pic">Creation Date</p>
-            <p class="cp-pic" style="margin-right: 50px;">Actions</p>
-        </a>
+    <table class="ac-table">
+        <thead>
+            <tr class="ac-table-header">
+                <th>User</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Creation Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for acc in accounts %}
+            <tr class="ac-table-row">
+                <td>{{ acc[1] }}</td>
+                <td>{{ acc[2] }}</td>
+                <td>{{ acc[4] }}</td>
+                <td>{{ acc[3].strftime('%m-%d-%Y') }}</td>
+                <td>{{ acc[5] }}</td>
+                <td class="ac-actions">
+                    <a href="{{ url_for('account.accountDetails', acc_id=acc[0]) }}" class="ac-link">Edit</a> |
+                    <a href="{{ url_for('account.deleteAccount', acc_id=acc[0]) }}" method="POST" class="ac-link">Delete</a> 
+                    {% if acc[5] == 'Approved' %}
+                    |
+                    <a href="{{ url_for('account.approveAccount', acc_id=acc[0]) }}" method="POST" style="visibility: hidden;" class="ac-link">Approve</a>
+                    {% else %}
+                    <a href="{{ url_for('account.approveAccount', acc_id=acc[0]) }}" method="POST" class="ac-link">Approve</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="btns-group">
+        <a class="btn returnBtn" href="/dashboard">Return</a>
     </div>
-    
-    <div class="ac-list">
-        <div class="ac-container">
-            <p class="ac-bold">Dr Joey</p>
-            <p class="cp-pic">1234</p>
-            <p class="ac-bold">Administrator</p>
-            <p class="cp-pic">06/26/2021</p>
-            <p class="ac-actions">
-                <a href="/edit" class="ac-link">Edit</a>  |
-                <a href="/delete" class="ac-link">Delete</a> |  
-                <a href="/approve" class="ac-link">Approve</a>
-            </p>
-        </div>
+    {% else %}
+    <p class="no-acc-msg">No accounts found.</p>
+    <div class="btns-group">
+        <a class="btn returnBtn" href="/dashboard">Return</a>
     </div>
-    
+    {% endif %}    
 </main>
-
 {% endblock %}
