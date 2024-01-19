@@ -6,7 +6,7 @@ account_bp = Blueprint('account', __name__)
 
 @account_bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('accountmanage.html')
 
 @account_bp.route('/login', methods=['GET', 'POST'])
 def login():
