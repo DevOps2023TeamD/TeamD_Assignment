@@ -279,31 +279,39 @@ textarea:focus {
 }
 
 /* Account Management List*/
-
-.ac-header {
-    margin-bottom: 30px;
+.ac-header{
+    margin-bottom: 10px;
 }
 
-.ac-table {
-    width: 70%;
-    border-collapse: collapse;
+.ac-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.ac-table-header th {
-    background-color: var(--light-grey);
+.ac-containertitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     padding: 15px;
-    font-size: 0.9rem;
-}
-
-.ac-table-row td {
-    background-color: lavender;
-    padding: 15px;
+    width: 1000px;
     font-size: 0.8rem;
-    text-align: center;
+    transition: transform ease-in-out 0.2s;
+    background-color: var(--light-grey);
+    text-decoration: none;
 }
 
-.ac-actions {
-    white-space: nowrap; /* Prevent line breaks in actions column */
+
+.ac-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    width: 1000px;
+    font-size: 0.8rem;
+    transition: transform ease-in-out 0.2s;
+    background-color: lavender;
+    text-decoration: none;
 }
 
 .ac-bold {
@@ -311,18 +319,16 @@ textarea:focus {
 }
 
 .ac-link {
-    color: inherit;
-    text-decoration: none;
+    color: inherit; /* or color: transparent; */
+    text-decoration: none; /* Optional: Remove underline */
     transition: transform 0.3s;
 }
-
 .ac-link:hover {
-    color: var(--cyan);
+    color: var(--cyan)
 }
-
 .ac-title {
     font-size: 1rem;
-    color: var(--dark-grey);
+    color: var(--dark-grey);;
 }
 
 
