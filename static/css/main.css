@@ -278,6 +278,51 @@ textarea:focus {
     color: var(--dark-grey);
 }
 
+/* Account Management List*/
+
+.ac-header {
+    margin-bottom: 30px;
+}
+
+.ac-table {
+    width: 70%;
+    border-collapse: collapse;
+}
+
+.ac-table-header th {    
+    background-color: var(--light-grey);
+    padding: 15px;
+    font-size: 0.9rem;
+}
+.ac-table-row td {
+    background-color: lavender;
+    padding: 15px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+.ac-actions {
+    white-space: nowrap; /* Prevent line breaks in actions column */
+}
+
+.ac-bold {
+    font-weight: bold;
+}
+
+.ac-link {
+    color: inherit; /* or color: transparent; */
+    text-decoration: none; /* Optional: Remove underline */
+    transition: transform 0.3s;
+}
+
+.ac-link:hover {
+    color: var(--cyan);
+}
+
+.ac-title {
+    font-size: 1rem;
+    color: var(--dark-grey);
+}
+
 /* Buttons */
 
 .btns-group {
