@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from database import get_database_connection
 
 capstone_bp = Blueprint('capstone', __name__)
 
+# Create Capstone GET & POST
 @capstone_bp.route('/createCapstone', methods=['GET', 'POST'])
 def createCapstone():
     if request.method == "POST":
@@ -16,7 +17,6 @@ def createCapstone():
 
         # Get radio input value
         cp_roleOfContact = request.form.get('cp-roleOfContact')
-        print(cp_roleOfContact)
 
         # Connect to database
         connection = get_database_connection()
@@ -33,6 +33,7 @@ def createCapstone():
     else:
         return render_template('createCapstone.html')
 
+# Query Capstone GET & POST
 @capstone_bp.route('/queryCapstone', methods=['GET', 'POST'])
 def queryCapstone():
     if request.method == "POST":
@@ -44,34 +45,48 @@ def queryCapstone():
         if academic_year and (not academic_year.isdigit() or len(academic_year) != 4):
             return render_template('queryCapstone.html', error='Invalid Year Format')
 
-        # Connect to database
-        connection = get_database_connection()
-        cursor = connection.cursor()
-
-        #SQL Query base
-        query = "SELECT * FROM capstone_projects WHERE 1=1"
-
-        # Check if academic year and/or keyword are provided
-        if academic_year:
-            query += f" AND academic_year = '{academic_year}'"
-        if keyword:
-            query += f" AND capstone_title LIKE '%{keyword}%' OR project_description LIKE '%{keyword}%'"
-
-        # Add sorting by descending year
-        query += " ORDER BY academic_year DESC"
-
-        # Execute the SQL Query
-        cursor.execute(query)
-        capstone_projects = cursor.fetchall()
-
-        return render_template('queryResults.html', capstone_projects=capstone_projects)
+        return redirect(url_for('capstone.queryResults', academic_year=academic_year, keyword=keyword))
     else:
         return render_template('queryCapstone.html')
-    
-@capstone_bp.route('/capstoneDetails/<int:cp_id>')
-def capstoneDetails(cp_id):
-    # Retrieve session variables
+
+# Query Results GET
+@capstone_bp.route('/queryResults', methods=['GET'])
+def queryResults():
+    # Retrieve parameters from URL
+    academic_year = request.args.get('academic_year')
+    keyword = request.args.get('keyword')
+
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = "SELECT * FROM capstone_projects WHERE 1=1"
+
+    # Check if academic year and/or keyword are provided
+    if academic_year:
+        query += f" AND academic_year = '{academic_year}'"
+    if keyword:
+        query += f" AND capstone_title LIKE '%{keyword}%' OR project_description LIKE '%{keyword}%'"
+
+    # Sort by descending year
+    query += " ORDER BY academic_year DESC"
+
+    # Execute the SQL Query
+    cursor.execute(query)
+    capstone_projects = cursor.fetchall()
+
+    return render_template('queryResults.html', capstone_projects=capstone_projects, academic_year=academic_year, keyword=keyword)
+
+# Capstone Details GET   
+@capstone_bp.route('/capstoneDetails/<int:cp_id>', methods=['GET'])
+def capstoneDetails(cp_id, message=''):
+    # Retrieve account type from session 
     account_type = session.get('account_type')
+
+    # Retrieve parameters from URL
+    academic_year = request.args.get('academic_year')
+    keyword = request.args.get('keyword')
 
     # Connect to the database
     connection = get_database_connection()
@@ -83,6 +98,25 @@ def capstoneDetails(cp_id):
     capstone_project = cursor.fetchone()
 
     if account_type == "Normal User":
-        return render_template('capstoneDetails.html', capstone_project = capstone_project, account_type='Normal User')
+        return render_template(
+            'capstoneDetails.html', 
+            capstone_project=capstone_project, 
+            account_type='Normal User', 
+            message=message,
+            academic_year=academic_year,
+            keyword=keyword
+        )
     elif account_type == "Administrator":
-        return render_template('capstoneDetails.html', capstone_project = capstone_project, account_type='Administrator')
+        return render_template(
+            'capstoneDetails.html', 
+            capstone_project=capstone_project, 
+            account_type='Administrator', 
+            message=message,
+            academic_year=academic_year,
+            keyword=keyword
+        )
+
+# Delete Capstone POST
+@capstone_bp.route('/deleteCapstone/<int:cp_id>', methods=['POST'])
+def deleteCapstone(cp_id):
+    pass
