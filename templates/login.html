@@ -7,38 +7,36 @@
     <div class="title">TSAO Capstone Records System</div>
 </div>
 <main class="content">
-    <form action="/login" method="POST">
-        <h2>Sign In</h2>
-        <!-- Username Input -->
-        <div class="input-selection">
-            <input type="text" name="username" id="username" placeholder=" " required>
-            <div class="label">
-                <label for="username">Username</label>
+    <form class="form" action="/login" method="POST">
+        <div class="form-container">
+            <h2>Sign In</h2>
+            <!-- Username Input -->
+            <div class="input-group">
+                <input type="text" name="username" id="username" required>
+                <label for="username">Username</label>         
             </div>
-        </div>
 
-        <!-- Password Input -->
-        <div class="input-selection">
-            <input type="password" name="password" id="password" placeholder=" " required>
-            <div class="label">
+            <!-- Password Input -->
+            <div class="input-group">
+                <input type="password" name="password" id="password" required>
                 <label for="password">Password</label>
             </div>
+
+            <div class="btns-group">
+                <input type="submit" class="btn loginBtn" value="Login">
+                <a class="btn cancelBtn" href="/">Cancel</a>
+            </div>
+
+            {% if error == 'Account not approved' %}
+            <div class="error-text">Account not approved. Please contact your administrator to approve.</div>
+            {% endif %}
+            
+            {% if error == 'Invalid credentials' %}
+            <div class="error-text">Invalid login credentials. Please try again.</div>
+            {% endif %}
+
+            <div class="signUpLink">Don't have an account?<a class="redirect-link" href="/register">Sign up</a></div>
         </div>
-
-        <div class="btns-group">
-            <input type="submit" class="btn loginBtn" value="Login">
-            <a class="btn cancelBtn" href="/">Cancel</a>
-        </div>
-
-        {% if error == 'Account not approved' %}
-        <div class="error-text loginError">Account not approved. Please contact your administrator to approve.</div>
-        {% endif %}
-        
-        {% if error == 'Invalid credentials' %}
-        <div class="error-text loginError">Invalid login credentials. Please try again.</div>
-        {% endif %}
-
-        <div class="signUpLink">Don't have an account?<a class="underline-link" href="/register">Click here</a></div>
     </form>
 </main>
 {% endblock %}

@@ -7,7 +7,7 @@
     <div class="title">TSAO Capstone Records System</div>
 </div>
 <main class="content">
-    <form class="cp-form" action="/modifyCapstone" method="POST">
+    <form class="form cp-form" action="/modifyCapstone" method="POST">
         <div class="form-container">
             <h2>{{ capstone_project[5] }}</h2>
             
@@ -83,13 +83,21 @@
             <div class="btns-group">
                 <input type="submit" class="btn modifyCpBtn" value="Modify">
                 {% if account_type == "Administrator" %}
-                <a class="btn delCapstoneBtn" href="/deleteCapstone">Delete</a>
+                <a class="btn delCapstoneBtn" href="{{ url_for('capstone.deleteCapstone', cp_id=capstone_project[0], academic_year=academic_year, keyword=keyword) }}">Delete</a>
                 {% endif %}
-                <a class="btn returnBtn" href="/queryCapstone">Return</a>
+                <a class="btn returnBtn" href="{{ url_for('capstone.queryResults', academic_year=academic_year, keyword=keyword) }}">Return</a>
             </div>
 
             {% if message == 'Successful Capstone Modification' %}
             <div class="success-text">Capstone project successfully modified.</div>
+            {% endif %}
+
+            {% if message == 'Invalid Number of Students' %}
+            <div class="error-text">Invalid number of students.</div>
+            {% endif %}
+
+            {% if message == 'Invalid Year Format' %}
+            <div class="error-text">Invalid academic year.</div>
             {% endif %}
         </div>
     </form>

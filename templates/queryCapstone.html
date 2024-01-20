@@ -7,7 +7,7 @@
     <div class="title">TSAO Capstone Records System</div>
 </div>
 <main class="content">
-    <form action="/queryCapstone" method="POST">
+    <form class="form" action="/queryCapstone" method="POST">
         <div class="form-container">
             <h2>Capstone Entry Query</h2>
             <!-- Academic year Input -->
@@ -24,7 +24,7 @@
 
             <div class="btns-group">
                 <input type="submit" class="btn searchBtn" value="Search">
-                <a class="btn returnBtn" href="/dashboard">Return</a>
+                <a class="btn cancelBtn" href="/dashboard">Cancel</a>
             </div>
 
             {% if error == 'Invalid Year Format' %}
