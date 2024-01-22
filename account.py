@@ -129,21 +129,21 @@ def approveAccount(acc_id):
     return accountManagement()
 
 # Modify Account
-@account_bp.route('/modifyAccount/<int:acc_id>', methods=['GET', 'POST'])
+@account_bp.route('/modifyAccount/<int:acc_id>', methods=['POST'])
 def modifyAccount(acc_id):
-    if request.method == "POST":
-        account_name = request.form['acc-name']
-        account_password = request.form['acc-pwd']
-        account_type = request.form['acc-type']
+    account_name = request.form['acc-name']
+    account_password = request.form['acc-pwd']
+    account_type = request.form.get['acc-type']
+    account_date = request.form['acc-date']
 
-        # Connect to database
-        connection = get_database_connection()
-        cursor = connection.cursor()
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
 
-        #SQL Query base
-        query = """UPDATE accounts SET username = %s, password = %s, account_type =%s, WHERE account_id=%s"""
+    #SQL Query base
+    query = """UPDATE accounts SET username = %s, password = %s, account_type =%s, account_date =%s, WHERE account_id=%s"""
 
-        cursor.execute(query, (account_name, account_password, account_type, acc_id,))
-        connection.commit()
+    cursor.execute(query, (account_name, account_password, account_type, account_date, acc_id,))
+    connection.commit()
 
-        return accountManagement()
+    return accountDetails(acc_id, message='Successful Account Modification')
