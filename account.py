@@ -150,7 +150,7 @@ def modifyAccount(acc_id):
 
     return accountDetails(acc_id, message='Successful Account Modification')
 
-# Delete Account
+# Delete Accounts
 @account_bp.route('/deleteAccount/<int:acc_id>', methods=['POST'])
 def deleteAccount(acc_id):
     # Connect to database
