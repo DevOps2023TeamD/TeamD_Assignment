@@ -149,3 +149,18 @@ def modifyAccount(acc_id):
     connection.commit()
 
     return accountDetails(acc_id, message='Successful Account Modification')
+
+# Delete Accounts
+@account_bp.route('/deleteAccount/<int:acc_id>', methods=['POST'])
+def deleteAccount(acc_id):
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = "DELETE FROM accounts WHERE account_id = %s"
+    
+    cursor.execute(query, (acc_id,))
+    connection.commit()
+
+    return accountManagement()
