@@ -158,7 +158,7 @@ def deleteAccount(acc_id):
     cursor = connection.cursor()
 
     #SQL Query base
-    query = "DELETE * FROM accounts WHERE account_id = %s"
+    query = "DELETE FROM accounts WHERE account_id = %s"
     
     cursor.execute(query, (acc_id,))
     connection.commit()
