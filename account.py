@@ -127,3 +127,23 @@ def approveAccount(acc_id):
     connection.commit()
 
     return accountManagement()
+
+# Modify Account
+@account_bp.route('/modifyAccount/<int:acc_id>', methods=['GET', 'POST'])
+def modifyAccount(acc_id):
+    if request.method == "POST":
+        account_name = request.form['acc-name']
+        account_password = request.form['acc-pwd']
+        account_type = request.form['acc-type']
+
+        # Connect to database
+        connection = get_database_connection()
+        cursor = connection.cursor()
+
+        #SQL Query base
+        query = """UPDATE accounts SET username = %s, password = %s, account_type =%s, WHERE account_id=%s"""
+
+        cursor.execute(query, (account_name, account_password, account_type, acc_id,))
+        connection.commit()
+
+        return accountManagement()
