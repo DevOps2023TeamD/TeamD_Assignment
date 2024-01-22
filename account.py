@@ -133,6 +133,8 @@ def approveAccount(acc_id):
 def modifyAccount(acc_id):
     account_name = request.form['acc-name']
     account_password = request.form['acc-pwd']
+
+    # Get input from radio button for account type
     account_type = request.form.get('acc-type')
     account_date = request.form['acc-date']
 
