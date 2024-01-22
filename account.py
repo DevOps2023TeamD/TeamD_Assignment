@@ -143,9 +143,9 @@ def modifyAccount(acc_id):
     cursor = connection.cursor()
 
     #SQL Query base
-    query = """UPDATE accounts SET username = %s, password = %s, account_type =%s, creation_date =%s, WHERE account_id=%s"""
+    query = """UPDATE accounts SET username = %s, password = %s, creation_date =%s, account_type =%s, WHERE account_id=%s"""
 
-    cursor.execute(query, (account_name, account_password, account_type, account_date, acc_id))
+    cursor.execute(query, (account_name, account_password, account_date, account_type, acc_id))
     connection.commit()
 
     return accountDetails(acc_id, message='Successful Account Modification')
