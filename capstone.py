@@ -116,7 +116,17 @@ def capstoneDetails(cp_id, message=''):
             keyword=keyword
         )
 
-# Delete Capstone POST
-@capstone_bp.route('/deleteCapstone/<int:cp_id>', methods=['POST'])
+# Delete Capstone
+@capstone_bp.route('/deleteCapstone/<int:cp_id>', methods=['GET'])
 def deleteCapstone(cp_id):
-    pass
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = "DELETE FROM capstone_projects WHERE project_id = %s"
+
+    cursor.execute(query, (cp_id,))
+    connection.commit()
+
+    return queryCapstone()
