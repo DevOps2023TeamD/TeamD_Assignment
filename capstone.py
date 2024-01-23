@@ -134,3 +134,38 @@ def deleteCapstone(cp_id):
     connection.commit()
 
     return redirect(url_for('capstone.queryResults', academic_year=academic_year, keyword=keyword))
+
+#Modify Capstone
+@capstone_bp.route('/modifyCapstone/<int:cp_id>', methods=['POST'])
+def modifyCapstone(cp_id):
+    cp_name = request.form['cp-name']
+    cp_title = request.form['cp-title']
+    cp_noOfStudents = request.form['cp-noOfStudents']
+    cp_academicYear = request.form['cp-academicYear']
+    cp_companyName = request.form['cp-companyName']
+    cp_pointOfContract = request.form['cp-pointOfContact']
+    cp_desc = request.form['cp-description']
+
+    # Get radio input value
+    cp_roleOfContact = request.form.get('cp-roleOfContact')
+
+    # Validation: Check if number of students is a valid integer or less than maximum
+    if not cp_noOfStudents.isdigit() or int(cp_noOfStudents) > 6:
+        return capstoneDetails(cp_id, message='Invalid Number of Students')
+
+    # Validation: Check if academic year is a valid year (4-digit number)
+    if cp_academicYear and (not cp_academicYear.isdigit() or len(cp_academicYear) != 4):
+        return capstoneDetails(cp_id, message='Invalid Year Format')
+
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = """UPDATE capstone_projects SET person_in_charge=%s, role_of_contact=%s, num_students=%s, academic_year=%s, capstone_title=%s, company_name=%s,company_contact=%s, project_description=%s
+        WHERE project_id=%s"""
+    
+    cursor.execute(query, (cp_name, cp_roleOfContact, cp_noOfStudents, cp_academicYear, cp_title, cp_companyName, cp_pointOfContract, cp_desc, cp_id))
+    connection.commit()
+
+    return capstoneDetails(cp_id, message='Successful Capstone Modification')
