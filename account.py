@@ -127,3 +127,40 @@ def approveAccount(acc_id):
     connection.commit()
 
     return accountManagement()
+
+# Modify Account
+@account_bp.route('/modifyAccount/<int:acc_id>', methods=['POST'])
+def modifyAccount(acc_id):
+    account_name = request.form['acc-name']
+    account_password = request.form['acc-pwd']
+
+    # Get input from radio button for account type
+    account_type = request.form.get('acc-type')
+    account_date = request.form['acc-date']
+
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = """UPDATE accounts SET username = %s, password = %s, creation_date =%s, account_type =%s WHERE account_id =%s"""
+
+    cursor.execute(query, (account_name, account_password, account_date, account_type, acc_id))
+    connection.commit()
+
+    return accountDetails(acc_id, message='Successful Account Modification')
+
+# Delete Accounts
+@account_bp.route('/deleteAccount/<int:acc_id>', methods=['POST'])
+def deleteAccount(acc_id):
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    #SQL Query base
+    query = "DELETE FROM accounts WHERE account_id = %s"
+    
+    cursor.execute(query, (acc_id,))
+    connection.commit()
+
+    return accountManagement()
