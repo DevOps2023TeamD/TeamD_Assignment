@@ -129,5 +129,7 @@ jobs:
         VALIDATE_HTML: false
         VALIDATE_PYTHON_BLACK: false
         VALIDATE_PYTHON_ISORT: false
+        VALIDATE_MARKDOWN: false
         VALIDATE_JSCPD: false
         PYTHON_FLAKE8_CONFIG_FILE: .flake8
+
