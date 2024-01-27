@@ -1,15 +1,15 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, session
 from database import get_database_connection
 from datetime import datetime
 
 account_bp = Blueprint('account', __name__)
 
-# Index 
+
 @account_bp.route('/')
 def index():
     return render_template('index.html')
 
-# Login GET & POST 
+
 @account_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -21,7 +21,7 @@ def login():
         connection = get_database_connection()
         cursor = connection.cursor()
 
-        #SQL Query to check login credentials 
+        # SQL Query to check login credentials
         query = "SELECT * FROM accounts WHERE username = %s AND password = %s"
         cursor.execute(query, (username, password))
         account = cursor.fetchone()
@@ -33,7 +33,7 @@ def login():
                 # Save account_id in session storage
                 session['account_username'] = account[1]
                 session['account_type'] = account[4]
-                
+
                 if account[4] == 'Normal User':
                     return render_template('dashboard.html', accountName=account[1], account_type='Normal User')
                 elif account[4] == 'Administrator':
@@ -42,12 +42,12 @@ def login():
                 # If account is not approved, display error
                 return render_template('login.html', error='Account not approved')
         else:
-            # Else return back to login 
+            # Else return back to login
             return render_template('login.html', error='Invalid credentials')
     else:
         return render_template('login.html')
 
-# Register GET & POST
+
 @account_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
@@ -60,7 +60,8 @@ def register():
         cursor = connection.cursor()
 
         # SQL Query to check login credentials and status
-        query = "INSERT INTO accounts (username, password, creation_date, account_type, approval_status) VALUES (%s, %s, %s, 'Normal User', 'Pending')"
+        query = """INSERT INTO accounts (username, password, creation_date, account_type, approval_status)
+            VALUES (%s, %s, %s, 'Normal User', 'Pending')"""
         # Get current datetime
         current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cursor.execute(query, (username, password, current_date))
@@ -69,10 +70,9 @@ def register():
     else:
         return render_template('register.html')
 
-# Dashboard GET
-@account_bp.route('/dashboard', methods=['GET']) 
+
+@account_bp.route('/dashboard', methods=['GET'])
 def dashboard():
-    # Get account type from session
     account_type = session.get('account_type')
     account_name = session.get('account_username')
 
@@ -83,14 +83,14 @@ def dashboard():
     else:
         return render_template('login.html')
 
-# Account Management GET
+
 @account_bp.route('/accountManagement', methods=['GET'])
 def accountManagement():
     # Connect to database
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    #SQL Query base
+    # SQL Query base
     query = "SELECT * FROM accounts"
 
     # Execute the SQL Query
@@ -99,7 +99,7 @@ def accountManagement():
 
     return render_template('accountManagement.html', accounts=accounts)
 
-# Account Details GET
+
 @account_bp.route('/accountDetails/<int:acc_id>', methods=['GET'])
 def accountDetails(acc_id, message=''):
     # Connect to the database
@@ -113,53 +113,53 @@ def accountDetails(acc_id, message=''):
 
     return render_template('accountDetails.html', account=account, message=message)
 
-# Approve Account POST
-@account_bp.route('/approveAccount/<int:acc_id>', methods=['POST'])
-def approveAccount(acc_id):
-    # Connect to database
-    connection = get_database_connection()
-    cursor = connection.cursor()
 
-    #SQL Query base
-    query = """UPDATE accounts SET approval_status='Approved' WHERE account_id=%s"""
-
-    cursor.execute(query, (acc_id,))
-    connection.commit()
-
-    return accountManagement()
-
-# Modify Account
 @account_bp.route('/modifyAccount/<int:acc_id>', methods=['POST'])
 def modifyAccount(acc_id):
-    account_name = request.form['acc-name']
-    account_password = request.form['acc-pwd']
+    acc_name = request.form['acc-name']
+    acc_pwd = request.form['acc-pwd']
+    acc_date = request.form['acc-date']
 
-    # Get input from radio button for account type
-    account_type = request.form.get('acc-type')
-    account_date = request.form['acc-date']
+    # Get radio input value
+    acc_type = request.form.get('acc-type')
 
     # Connect to database
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    #SQL Query base
-    query = """UPDATE accounts SET username = %s, password = %s, creation_date =%s, account_type =%s WHERE account_id =%s"""
+    # SQL Query base
+    query = """UPDATE accounts SET username=%s, password=%s, creation_date=%s, account_type=%s WHERE account_id=%s"""
 
-    cursor.execute(query, (account_name, account_password, account_date, account_type, acc_id))
+    cursor.execute(query, (acc_name, acc_pwd, acc_date, acc_type, acc_id))
     connection.commit()
 
     return accountDetails(acc_id, message='Successful Account Modification')
 
-# Delete Accounts
+
 @account_bp.route('/deleteAccount/<int:acc_id>', methods=['POST'])
 def deleteAccount(acc_id):
     # Connect to database
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    #SQL Query base
-    query = "DELETE FROM accounts WHERE account_id = %s"
-    
+    # SQL Query base
+    query = """DELETE FROM accounts WHERE account_id=%s"""
+
+    cursor.execute(query, (acc_id,))
+    connection.commit()
+
+    return accountManagement()
+
+
+@account_bp.route('/approveAccount/<int:acc_id>', methods=['POST'])
+def approveAccount(acc_id):
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    # SQL Query base
+    query = """UPDATE accounts SET approval_status='Approved' WHERE account_id=%s"""
+
     cursor.execute(query, (acc_id,))
     connection.commit()
 
