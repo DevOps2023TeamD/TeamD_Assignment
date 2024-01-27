@@ -111,7 +111,6 @@ jobs:
       uses: super-linter/super-linter@v5.7.2
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        LOG_FILE: super-linter.log
         VALIDATE_GITHUB_ACTIONS: false
         VALIDATE_CSS: false
         VALIDATE_HTML: false

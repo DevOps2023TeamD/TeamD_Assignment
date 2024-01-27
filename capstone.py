@@ -3,7 +3,7 @@ from database import get_database_connection
 
 capstone_bp = Blueprint('capstone', __name__)
 
-# Create Capstone GET & POST
+
 @capstone_bp.route('/createCapstone', methods=['GET', 'POST'])
 def createCapstone():
     if request.method == "POST":
@@ -17,15 +17,16 @@ def createCapstone():
 
         # Get radio input value
         cp_roleOfContact = request.form.get('cp-roleOfContact')
+        print(cp_roleOfContact)
 
         # Connect to database
         connection = get_database_connection()
         cursor = connection.cursor()
 
-        #SQL Query base
-        query = """INSERT INTO capstone_projects (person_in_charge, role_of_contact, num_students, academic_year, capstone_title, company_name, company_contact, project_description)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-        
+        # SQL Query base
+        query = """INSERT INTO capstone_projects (person_in_charge, role_of_contact, num_students, academic_year, capstone_title, company_name,
+        company_contact, project_description) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+
         cursor.execute(query, (cp_name, cp_roleOfContact, cp_noOfStudents, cp_academicYear, cp_title, cp_companyName, cp_pointOfContract, cp_desc))
         connection.commit()
 
@@ -33,7 +34,7 @@ def createCapstone():
     else:
         return render_template('createCapstone.html')
 
-# Query Capstone GET & POST
+
 @capstone_bp.route('/queryCapstone', methods=['GET', 'POST'])
 def queryCapstone():
     if request.method == "POST":
@@ -49,10 +50,9 @@ def queryCapstone():
     else:
         return render_template('queryCapstone.html')
 
-# Query Results GET
+
 @capstone_bp.route('/queryResults', methods=['GET'])
 def queryResults():
-    # Retrieve parameters from URL
     academic_year = request.args.get('academic_year')
     keyword = request.args.get('keyword')
 
@@ -60,7 +60,7 @@ def queryResults():
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    #SQL Query base
+    # SQL Query base
     query = "SELECT * FROM capstone_projects WHERE 1=1"
 
     # Check if academic year and/or keyword are provided
@@ -69,7 +69,7 @@ def queryResults():
     if keyword:
         query += f" AND capstone_title LIKE '%{keyword}%' OR project_description LIKE '%{keyword}%'"
 
-    # Sort by descending year
+    # Add sorting by descending year
     query += " ORDER BY academic_year DESC"
 
     # Execute the SQL Query
@@ -78,13 +78,13 @@ def queryResults():
 
     return render_template('queryResults.html', capstone_projects=capstone_projects, academic_year=academic_year, keyword=keyword)
 
-# Capstone Details GET   
+
 @capstone_bp.route('/capstoneDetails/<int:cp_id>', methods=['GET'])
 def capstoneDetails(cp_id, message=''):
-    # Retrieve account type from session 
+    # Retrieve session variables
     account_type = session.get('account_type')
 
-    # Retrieve parameters from URL
+    # Retrieve additional parameters from the URL
     academic_year = request.args.get('academic_year')
     keyword = request.args.get('keyword')
 
@@ -99,43 +99,24 @@ def capstoneDetails(cp_id, message=''):
 
     if account_type == "Normal User":
         return render_template(
-            'capstoneDetails.html', 
-            capstone_project=capstone_project, 
-            account_type='Normal User', 
+            'capstoneDetails.html',
+            capstone_project=capstone_project,
+            account_type='Normal User',
             message=message,
             academic_year=academic_year,
             keyword=keyword
         )
     elif account_type == "Administrator":
         return render_template(
-            'capstoneDetails.html', 
-            capstone_project=capstone_project, 
-            account_type='Administrator', 
+            'capstoneDetails.html',
+            capstone_project=capstone_project,
+            account_type='Administrator',
             message=message,
             academic_year=academic_year,
             keyword=keyword
         )
 
-# Delete Capstone
-@capstone_bp.route('/deleteCapstone/<int:cp_id>', methods=['POST'])
-def deleteCapstone(cp_id):
-    # Connect to database
-    connection = get_database_connection()
-    cursor = connection.cursor()
 
-    # Retrieve additional parameters from the URL
-    academic_year = request.args.get('academic_year')
-    keyword = request.args.get('keyword')
-
-    #SQL Query base
-    query = """DELETE FROM capstone_projects WHERE project_id=%s"""
-    
-    cursor.execute(query, (cp_id,))
-    connection.commit()
-
-    return redirect(url_for('capstone.queryResults', academic_year=academic_year, keyword=keyword))
-
-#Modify Capstone
 @capstone_bp.route('/modifyCapstone/<int:cp_id>', methods=['POST'])
 def modifyCapstone(cp_id):
     cp_name = request.form['cp-name']
@@ -161,11 +142,30 @@ def modifyCapstone(cp_id):
     connection = get_database_connection()
     cursor = connection.cursor()
 
-    #SQL Query base
-    query = """UPDATE capstone_projects SET person_in_charge=%s, role_of_contact=%s, num_students=%s, academic_year=%s, capstone_title=%s, company_name=%s,company_contact=%s, project_description=%s
-        WHERE project_id=%s"""
-    
+    # SQL Query base
+    query = """UPDATE capstone_projects SET person_in_charge=%s, role_of_contact=%s, num_students=%s, academic_year=%s, capstone_title=%s, company_name=%s,
+        company_contact=%s, project_description=%s WHERE project_id=%s"""
+
     cursor.execute(query, (cp_name, cp_roleOfContact, cp_noOfStudents, cp_academicYear, cp_title, cp_companyName, cp_pointOfContract, cp_desc, cp_id))
     connection.commit()
 
     return capstoneDetails(cp_id, message='Successful Capstone Modification')
+
+
+@capstone_bp.route('/deleteCapstone/<int:cp_id>', methods=['POST'])
+def deleteCapstone(cp_id):
+    # Connect to database
+    connection = get_database_connection()
+    cursor = connection.cursor()
+
+    # Retrieve additional parameters from the URL
+    academic_year = request.args.get('academic_year')
+    keyword = request.args.get('keyword')
+
+    # SQL Query base
+    query = """DELETE FROM capstone_projects WHERE project_id=%s"""
+
+    cursor.execute(query, (cp_id,))
+    connection.commit()
+
+    return redirect(url_for('capstone.queryResults', academic_year=academic_year, keyword=keyword))
