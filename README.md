@@ -1,4 +1,5 @@
 [![Super-Linter](https://github.com/DevOps2023TeamD/TeamD_Assignment/actions/workflows/CPullRequest.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![Super-Linter](https://github.com/DevOps2023TeamD/TeamD_Assignment/actions/workflows/CIntegration.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 # DevOps Assignment - TSAO Capstone Records System
 This repository contains the code and documentation for the development of the TSAO Capstone Records System, as part of the DevOps assignment for the Diploma in Information Technology at the School of Infocomm Technology.
