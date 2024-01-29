@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %} <title>Dashboard</title>{% endblock %}
+{% block title %}<title>Dashboard</title>{% endblock %}
 
 {% block body %}
 <div class="header">
     <div class="title">TSAO Capstone Records System</div>
-    <a class="btn logoutBtn" href="/">Logout</a>
+    <a class="btn logInOutBtn" href="/">Logout</a>
 </div>
 
 <main class="content">
@@ -13,13 +13,13 @@
         <h1>Hi, {{ accountName }}</h1>
         <h1>Welcome to the TSAO Capstone Records System</h1>
     </div>
-    <div class="userBtns">
+    <div class="btns-group">
         {% if account_type == 'Normal User' %}
         <a class="btn createCapstoneBtn" href="/createCapstone">Create</a>
         <a class="btn queryCapstoneBtn" href="/queryCapstone">Query</a>
         {% else %}
         <a class="btn createCapstoneBtn" href="/createCapstone">Create</a>
-        <a class="btn modifyAccountsBtn" href="/modifyAccounts">Modify</a>
+        <a class="btn modifyAccountsBtn" href="/accountManagement">Modify</a>
         <a class="btn queryCapstoneBtn" href="/queryCapstone">Query</a>
         {% endif %}
     </div>

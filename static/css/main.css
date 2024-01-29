@@ -26,8 +26,15 @@ html {
     font-size: 62.5%;
 }
 
-/* Header */
+input {
+    border: none;
+}
 
+h1 {
+    text-align: center;
+}
+
+/* Header */
 .header {
     display: flex;
     justify-content: space-around;
@@ -42,7 +49,6 @@ html {
 }
 
 /* Content */
-
 main {
     display: flex;
     flex-direction: column;
@@ -51,106 +57,95 @@ main {
     min-height: 100vh;
 }
 
-/* Login & Registration form */
-
+/* Forms  */
 form {
-    background: var(--light-grey);
-    padding: 2.5rem;
-    border-radius: 0.8rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
+    display: inline;
+    box-shadow: 0 1px 1px rgba(0.1, 0.1, 0.1, 0.5);
 }
 
-form h2 {
-    margin-bottom: 4rem;
+.form {
+    background: var(--light-grey);
+    border-radius: 0.8rem;
+    display: flex;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    padding: 3rem;
+}
+
+.form h2 {
     font-size: 20px;
     color: var(--cyan)
 }
 
-.input-selection {
+.input-group {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 4rem;
-    width: 300px;
+    width: 100%;
 }
 
-input {
-    padding: 5px 0;
-    border: none;
-    border-bottom: 1px solid var(--dark-grey);
-    transition: .3s ease;
-    font-size: 14px;
+.input-group input {
+    width: 250px;
+    padding: 10px;
+    border: 1px solid var(--dark-grey);
+    background: transparent;
     color: var(--dark-grey);
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+}
+
+.input-group label, .input-group textarea {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    padding: 0 5px;
+    pointer-events: none;
+    font-size: 15px;
+    color: var(--dark-grey);
+    transition: .3s ease;
+}
+
+.input-group input:valid ~ label,
+.input-group input:focus ~ label
+{
+    top: 0;
+    color: var(--dark-blue);
+    font-size: 14px;
     background: var(--light-grey);
 }
 
-input:focus {
-    outline: none;
-    border-color: var(--light-blue);
-    box-shadow: 0 1px 0 0 var(--dark-blue);
-}
-
-.label {
-    position: absolute;
-    height: 70%;
-    display: flex;
-    align-items: center;
-    transition: .3s ease;
-}
-
-label {
-    color: var(--dark-grey);
-    font-size: 14px;
-}
-
-input:focus + .label,
-input:not(:placeholder-shown) + .label {
-    transform: translateY(-27px);
-}
-
-input:focus + .label label,
-input:not(:placeholder-shown) + .label label {
-    font-weight: 600;
-    color: black;
-}
-
 .signUpLink, .loginLink {
+    display: flex;
+    gap: 5px;
     font-size: 14px;
-    margin-top: 2rem;
 }
 
-.underline-link {
-    text-decoration: underline;
+.redirect-link {
     color: var(--dark-blue);
-    margin-left: 2px;
-    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.underline-link:hover {
+.redirect-link:hover {
+    cursor: pointer;
     color: var(--light-blue);
 }
 
 .error-text {
     color: var(--light-red);
     font-size: 14px;
+    font-weight: 600;
 }
 
 .success-text {
     color: green;
     font-size: 14px;
     font-weight: 600;
-    margin-top: 3rem;
-}
-
-.inputError {
-    margin-top: 5px;
-}
-
-.loginError {
-    font-weight: 600;
-    margin-top: 3rem;
 }
 
 /* Main Page */
@@ -159,26 +154,206 @@ input:not(:placeholder-shown) + .label label {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-bottom: 60px;
 }
 
-.normalUserBtns {
+/* Capstone form (query, details) */
+.cp-form {
+    margin-top: 150px;
+}
+
+.cp-form .form-container {
+    width: 700px;
+}
+
+.cp-form h2 {
+    width: 100%;
+    text-align: center;
+}
+
+.cp-form input[type="text"] {
+    width: 310px;
+}
+
+.cp-form .input-group {
+    width: 330px;
+}
+
+.width {
+    width: 170px !important;
+}
+
+.width input {
+    width: 150px !important;
+}
+
+.input-groups {
     display: flex;
-    gap: 70px;
-    margin-top: 50px;
+    justify-content: space-between;
+    width: 100%;
 }
 
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+}
+
+.radio {
+    display: flex;
+    gap: 5px;
+}
+
+.textarea-input {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+}
+
+textarea {
+    background: transparent;
+    border: 1px solid var(--dark-grey);
+    color: var(--dark-grey);
+    border-radius: 5px;
+    font-size: 15px;
+    outline: none;
+    padding: 10px;
+}
+
+textarea:focus {
+    border-color: var(--dark-blue);
+    font-size: 15px;
+}
+
+/* Capstone Query Results*/
+.no-cp-msg, .no-acc-msg {
+    color: var(--dark-blue);
+    font-weight: 600;
+}
+
+.cp-list, .acc-list {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem 0;
+    gap: 10px;
+}
+
+.cp-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    width: 1000px;
+    font-size: 0.8rem;
+    transition: transform ease-in-out 0.2s;
+    background-color: var(--light-grey);
+    box-shadow: 0 1px 1px rgba(0.1, 0.1, 0.1, 0.5);
+    text-decoration: none;
+}
+
+.cp-container:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.cp-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
+
+.cp-pic {
+    color: var(--dark-grey);
+}
+
+/* Account Management */
+.acc-header{
+    display: flex;
+    gap: 100px;
+    margin-top: 4rem;
+}
+
+.acc-list {
+    margin-bottom: 4rem;
+}
+
+.acc-table {
+    border-collapse: collapse;
+    margin: 4rem 0;
+    box-shadow: 0 1px 1px rgba(0.1, 0.1, 0.1, 0.5);
+}
+
+.acc-table th, .acc-table td {
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.acc-table th {
+    background-color: var(--white);
+    color: var(--cyan);
+}
+
+.acc-table td {
+    font-size: 14px;
+}
+
+.acc-table td a, 
+.acc-table td input {
+    text-decoration: none;
+    color: var(--dark-grey);
+    padding: 0 5px;
+    font-weight: 600;
+    background: transparent;
+}
+
+.acc-table td a:hover, 
+.acc-table td input:hover {
+    color: var(--dark-blue);
+    cursor: pointer;
+}
+
+.acc-table tr {
+    background-color: var(--light-grey);
+    box-shadow: 0 1px 1px rgba(0.1, 0.1, 0.1, 0.5);
+}
+
+/* Account Details */
+.date label {
+    position: static;
+}
+
+.acc-radio {
+    margin-left: 60px;
+}
 
 /* Buttons */
+.btns-group {
+    display: flex;
+    gap: 60px;
+}
 
 .btn {
-    padding: 10px 15px;
-    border-radius: 0.5rem;
+    padding: 8px 20px;
+    border-radius: 20px;
     cursor: pointer;
     transition: .3s;
     background-color: var(--light-blue);
     color: var(--white);
     text-decoration: none;
     font-size: 14px;
+    font-weight: 600;
 }
 
 .btn:hover {
@@ -186,15 +361,37 @@ input:not(:placeholder-shown) + .label label {
 }
 
 .cancelBtn {
-    background-color: var(--light-red);
+    background: transparent;
+    color: var(--light-red);
+    border: 1px solid var(--red);
 }
 
 .cancelBtn:hover {
+    color: var(--white);
+    background-color: var(--red);
+}
+
+.logInOutBtn {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--white);
+}
+
+.logInOutBtn:hover {
+    color: var(--dark-blue);
+    background-color: var(--white);
+}
+
+.delCapstoneBtn {
+    background-color: var(--light-red);
+    color: var(--white);
+}
+
+.delCapstoneBtn:hover {
     background-color: var(--red);
 }
 
 /* Misc */
-
 .hide {
     display: none;
 }

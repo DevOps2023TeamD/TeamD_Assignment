@@ -27,7 +27,6 @@ jobs:
         pip install flask
         pip install mysql-connector-python
         pip install python-dotenv
-        pip install flake8
         
     - name: Checkout Development Code
       uses: actions/checkout@v4
@@ -54,11 +53,6 @@ jobs:
         mysql -h localhost --port 3306 -u$DB_USER -p$DB_PASSWORD < create_test_db.sql
         mysql -h localhost --port 3306 -u$DB_USER -p$DB_PASSWORD -e "USE test_db; SHOW TABLES;"
 
-    - name: Lint code with Flake8
-      run: |
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
     - name: Test Pytest
       if: always()
       run: |
@@ -78,6 +72,14 @@ jobs:
           Job -           `${{ github.job }}`
           status -        `${{ job.status }}`
           assignees: YaSwe
+
+    - if: ${{ failure() }}
+      name: Discord notification on Failed workflow
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'One of the test cases in {{ EVENT_PAYLOAD.repository.full_name }} has failed.'
           
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action/composite@v2
@@ -99,3 +101,21 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testResults
+
+  lint:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Super Linter
+      uses: super-linter/super-linter@v5.7.2
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_GITHUB_ACTIONS: false
+        VALIDATE_CSS: false
+        VALIDATE_HTML: false
+        VALIDATE_PYTHON_BLACK: false
+        VALIDATE_PYTHON_ISORT: false
+        VALIDATE_MARKDOWN: false
+        VALIDATE_JSCPD: false
+        PYTHON_FLAKE8_CONFIG_FILE: .flake8
